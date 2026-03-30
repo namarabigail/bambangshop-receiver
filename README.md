@@ -92,3 +92,10 @@ Kita tidak menggunakan `Mutex<>` karena `Mutex` hanya mengizinkan satu *thread* 
 Rust menerapkan aturan  *ownership* yang sangat ketat. Oleh karena itu, Rust mengharuskan kita menggunakan mekanisme seperti `lazy_static` yang dikombinasikan dengan struktur data *thread-safe* (seperti `DashMap` atau `RwLock`) untuk menjamin bahwa akses ke variabel tersebut telah tersinkronisasi dan aman dari konflik antar *thread*.
 
 #### Reflection Subscriber-2
+1. Saya berfokus pada langkah-langkah yang ada di dalam tutorial untuk memastikan pemahaman yang mendalam mengenai alur dasar *Observer Pattern* terlebih dahulu. Namun, saya juga melihat sepintas file seperti `src/lib.rs` untuk memahami bagaimana modul-modul di dalam proyek Rust ini saling terhubung secara internal dan bagaimana *crate* dikonfigurasi agar bisa digunakan oleh *binary* utama.
+
+2. *Observer Pattern* sangat memudahkan penambahan *subscriber* karena adanya pemisahan tanggung jawab (*decoupling*) antara *Publisher* dan *Subscriber*. *Publisher* tidak perlu tahu detail internal dari setiap *subscriber*, cukup dengan mendaftarkan URL atau alamat baru ke dalam daftar, *subscriber* tersebut sudah bisa menerima notifikasi secara otomatis. 
+
+Jika terdapat lebih dari satu *instance* **Main App (Publisher)**, sistem akan menjadi lebih kompleks. Menambahkan *subscriber* mungkin masih terasa mudah, namun akan muncul tantangan dalam sinkronisasi data antar *Publisher*. Tanpa basis data terpusat, setiap *Publisher* akan memiliki daftar *subscriber* yang berbeda-beda, sehingga notifikasi yang diterima oleh satu *instance* Receiver bisa jadi tidak konsisten.
+
+3. Saya mencoba mengoptimalkan dokumentasi pada **Postman Collection**. Hal ini sangat berguna, terutama untuk proyek kelompok, karena anggota tim lain dapat langsung memahami cara kerja API tanpa harus membaca kode program secara keseluruhan. Selain itu, fitur pengujian otomatis di Postman membantu memastikan bahwa setiap perubahan kecil pada kode tidak merusak fungsionalitas utama aplikasi.
