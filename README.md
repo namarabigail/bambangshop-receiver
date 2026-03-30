@@ -83,5 +83,12 @@ This is the place for you to write reflections:
 ### Mandatory (Subscriber) Reflections
 
 #### Reflection Subscriber-1
+1. Penggunaan `RwLock<>` (Read-Write Lock) diperlukan karena aplikasi Receiver sering kali melakukan operasi pembacaan data (seperti saat menampilkan daftar notifikasi) secara lebih intens dibandingkan operasi penulisan (saat menerima notifikasi baru). 
+
+Kita tidak menggunakan `Mutex<>` karena `Mutex` hanya mengizinkan satu *thread* saja untuk mengakses data di satu waktu. Sedangkan, `RwLock` mengizinkan banyak *thread* untuk melakukan operasi pembacaan (*multiple readers*) selama tidak ada *thread* yang sedang menulis. Hal ini membuat performa aplikasi jauh lebih efisien.
+
+2. Rust tidak mengizinkan modifikasi variabel statis secara langsung karena alasan **memory safety** dan pencegahan **data race**. Di Java, variabel statis global yang diubah secara bebas oleh banyak *thread* berisiko menimbulkan kondisi balapan (*race condition*) yang sulit dideteksi jika tidak dikelola dengan sangat hati-hati. 
+
+Rust menerapkan aturan  *ownership* yang sangat ketat. Oleh karena itu, Rust mengharuskan kita menggunakan mekanisme seperti `lazy_static` yang dikombinasikan dengan struktur data *thread-safe* (seperti `DashMap` atau `RwLock`) untuk menjamin bahwa akses ke variabel tersebut telah tersinkronisasi dan aman dari konflik antar *thread*.
 
 #### Reflection Subscriber-2
